@@ -16,7 +16,7 @@ with st.sidebar:
 st.title("⚡ Telescopic Lab")
 
 # ลิงก์ Web App ของอ้าย
-WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwd84th5aMdcSAekGsacncXtSPdcpXCU2kv5me-sFo9hZDKt9XgBBj-a9WJV4C4TKyT/exec"
+WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyC87oA6lqQaxWUfo8y5OtImplEP2552O1C-Tj2zTctw1cyeMC1Tm7F7M2Ag9FkN3lR/exec"
 
 # --- ฟังก์ชันบันทึก Log ---
 def save_to_sheets(source, entry_time):
