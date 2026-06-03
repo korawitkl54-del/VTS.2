@@ -4,7 +4,7 @@ import pandas as pd
 from datetime import datetime
 
 st.set_page_config(page_title="Boss Mel Benchmark", layout="wide")
-st.title("⚡ Boss Mel Performance Lab")
+st.title("⚡อัลกอริทึมการประมวลผลเทเลสโคปิกกำลังสามความเร็วสูง")
 
 # 1. ระบบเก็บข้อมูลผู้ใช้งาน (Session State)
 if 'user_info' not in st.session_state:
