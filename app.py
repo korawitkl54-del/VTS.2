@@ -6,6 +6,13 @@ from datetime import datetime
 
 # --- ตั้งค่าหน้าเว็บ ---
 st.set_page_config(page_title="Telescopic Lab", layout="wide")
+
+# --- ใส่ตราโรงเรียนที่ Sidebar ---
+with st.sidebar:
+    st.image("image-removebg-preview.jpg", width=200) # ใส่ชื่อไฟล์รูปให้ตรง
+    st.markdown("---")
+    st.write("ระบบคำนวณเชิงประสิทธิภาพสูง")
+
 st.title("⚡ Telescopic Lab")
 
 # ลิงก์ Web App ของอ้าย
@@ -51,12 +58,10 @@ if st.button("เปรียบเทียบความเร็ว"):
         k_values = [int(x.strip()) for x in k_input.split(",")]
         results = []
         for k in k_values:
-            # วัดเวลา BF
             start = time.time()
             val_bf = brute_force(a, k)
             time_bf = time.time() - start
             
-            # วัดเวลา HS
             start = time.time()
             val_hs = high_speed(a, k)
             time_hs = time.time() - start
@@ -70,4 +75,4 @@ if st.button("เปรียบเทียบความเร็ว"):
         
         st.table(pd.DataFrame(results))
     except:
-        st.error("ใส่ค่า k ให้ถูกต้องนะครับ (เช่น 10, 100, 1000)")
+        st.error("ใส่ค่า k ให้ถูกต้องนะครับ")
