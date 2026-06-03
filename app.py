@@ -9,7 +9,7 @@ st.title("⚡ Boss Mel Performance Lab")
 # 1. ระบบเก็บข้อมูลผู้ใช้งาน (Session State)
 if 'user_info' not in st.session_state:
     with st.form("user_form"):
-        source = st.text_input("คุณมาจากที่ไหนครับ?")
+        source = st.text_input("ระบุโรงเรียน/หน่วยงาน:")
         submit = st.form_submit_button("เข้าสู่ระบบ")
         if submit:
             st.session_state.user_info = {"source": source, "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
