@@ -9,7 +9,7 @@ st.set_page_config(page_title="Telescopic Lab", layout="wide")
 st.title("⚡ Telescopic Lab")
 
 # ลิงก์ Web App ของอ้าย (ใส่ตรงนี้)
-WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwd84th5aMdcSAekGsacncXtSPdcpXCU2kv5me-sFo9hZDKt9XgBBj-a9WJV4C4TKyT/exec"
+WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzueEWEOLTmtgGWmbN8LlkSI3pvkvIeS_vNpeDl19GheXi2Xiw3bZyRIjIb1UCEfLHP/exec"
 
 # --- ระบบบันทึกข้อมูล ---
 def save_to_sheets(source, entry_time):
