@@ -9,7 +9,7 @@ st.set_page_config(page_title="Telescopic Lab", layout="wide")
 
 # --- ใส่ตราโรงเรียนที่ Sidebar ---
 with st.sidebar:
-    st.image("image-removebg-preview.jpg", width=200) # ใส่ชื่อไฟล์รูปให้ตรง
+    st.image("image-removebg-preview.png", width=200) # ใส่ชื่อไฟล์รูปให้ตรง
     st.markdown("---")
     st.write("ระบบคำนวณเชิงประสิทธิภาพสูง")
 
