@@ -1,29 +1,33 @@
 import streamlit as st
 import time
 import pandas as pd
+import requests
 from datetime import datetime
-import gspread
-from oauth2client.service_account import ServiceAccountCredentials
 
-# --- ตั้งค่า Google Sheets ---
+# --- ตั้งค่าหน้าเว็บ ---
+st.set_page_config(page_title="Telescopic Lab", layout="wide")
+st.title("⚡ Telescopic Lab")
+
+# ลิงก์ Web App ของอ้าย (ใส่ตรงนี้)
+WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwd84th5aMdcSAekGsacncXtSPdcpXCU2kv5me-sFo9hZDKt9XgBBj-a9WJV4C4TKyT/exec"
+
+# --- ระบบบันทึกข้อมูล ---
 def save_to_sheets(source, entry_time):
-    scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    creds = ServiceAccountCredentials.from_json_keyfile_name('credentials.json', scope)
-    client = gspread.authorize(creds)
-    sheet = client.open("BossMelLog").sheet1 # เปลี่ยนชื่อไฟล์ให้ตรงกับที่อ้ายตั้ง
-    sheet.append_row([source, entry_time])
+    # ส่งข้อมูลแบบ POST ไปที่ Google Script
+    params = {'source': source, 'time': entry_time}
+    try:
+        requests.post(WEB_APP_URL, data=params)
+    except:
+        pass # ถ้าเน็ตหลุดหรือลิงก์มีปัญหา ไม่ให้โปรแกรมพัง
 
-# --- หน้าจอหลัก ---
-st.set_page_config(page_title="SpeedCalc", layout="wide")
-st.title("⚡SpeedCalc")
-
+# --- ระบบล็อกอิน ---
 if 'user_info' not in st.session_state:
     with st.form("user_form"):
         source = st.text_input("ระบุโรงเรียน/หน่วยงาน")
         submit = st.form_submit_button("เข้าสู่ระบบ")
         if submit and source:
             t = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            save_to_sheets(source, t) # เก็บข้อมูลลง Sheets
+            save_to_sheets(source, t)
             st.session_state.user_info = {"source": source, "time": t}
             st.rerun()
     st.stop()
