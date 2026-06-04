@@ -5,7 +5,7 @@ import requests
 from datetime import datetime
 
 # --- ตั้งค่าหน้าเว็บ ---
-st.set_page_config(page_title="เทเลสโคปิกกำลังสาม (Telescoping Cubic):จากคณิตศาสตร์บริสุทธิ์สู่อัลกอริทึมการประมวลผลความเร็วสูง
+st.set_page_config(page_title="เทเลสโคปิกกำลังสาม:จากคณิตศาสตร์บริสุทธิ์สู่อัลกอริทึมการประมวลผลความเร็วสูง
 ", layout="wide")
 
 # --- ใส่ตราโรงเรียนที่ Sidebar ---
