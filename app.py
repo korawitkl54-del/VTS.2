@@ -7,7 +7,7 @@ from datetime import datetime
 # --- ตั้งค่าหน้าเว็บ ---
 st.set_page_config(page_title="เทเลสโคปิกกำลังสาม", layout="wide")
 
-# --- Sidebar: ใส่ตราโรงเรียน ---
+# --- Sidebar ---
 with st.sidebar:
     # ตรวจสอบชื่อไฟล์รูปให้ตรงกับที่อัปขึ้น GitHub
     try:
@@ -72,7 +72,7 @@ if st.button("เปรียบเทียบความเร็ว"):
             val_hs = high_speed(a, k)
             time_hs = time.time() - start
             
-            # วิเคราะห์ข้อมูล
+            # เช็คความถูกต้องด้วยทศนิยม 4 ตำแหน่ง
             is_correct = "✅ ถูกต้อง" if round(val_bf, 4) == round(val_hs, 4) else "❌ ไม่ถูกต้อง"
             speed_ratio = time_bf / time_hs if time_hs > 0 else 0
             
@@ -83,10 +83,4 @@ if st.button("เปรียบเทียบความเร็ว"):
                 "HS Time(s)": f"{time_hs:.6f}",
                 "อัตราส่วนความเร็ว": f"{speed_ratio:.1f} เท่า",
                 "ผลลัพธ์ (BF)": f"{val_bf:.4f}",
-                "ผลลัพธ์ (HS)": f"{val_hs:.4f}",
-                "สถานะ": is_correct
-            })
-        
-        st.table(pd.DataFrame(results))
-    except:
-        st.error("ใส่ค่า k ให้ถูกต้องนะครับ (เช่น 10, 100, 1000)")
+                "ผลลัพธ์ (HS)": f"{val_hs:.4
