@@ -4,6 +4,10 @@ import pandas as pd
 import requests
 import math
 from datetime import datetime
+from decimal import Decimal, getcontext
+
+# ตั้งความแม่นยำทศนิยมไว้ที่ 50 ตำแหน่ง
+getcontext().prec = 50
 
 # --- ตั้งค่าหน้าเว็บ ---
 st.set_page_config(page_title="เทเลสโคปิกกำลังสาม", layout="wide")
@@ -17,7 +21,7 @@ with st.sidebar:
     st.markdown("---")
     st.write("ระบบคำนวณเชิงประสิทธิภาพสูง")
 
-st.title("⚡ เทเลสโคปิกกำลังสาม")
+st.title("⚡ Telescoping Cubic จากคณิตศาสตร์บริสุทธิ์สู่อัลกอริทึมการประมวลผลความเร็วสูง")
 
 WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyC87oA6lqQaxWUfo8y5OtImplEP2552O1C-Tj2zTctw1cyeMC1Tm7F7M2Ag9FkN3lR/exec"
 
@@ -39,64 +43,3 @@ if 'user_info' not in st.session_state:
             st.session_state.user_info = {"source": source, "time": t}
             st.rerun()
     st.stop()
-
-# --- ส่วนคำนวณ ---
-a = st.number_input("ใส่ค่า a:", value=1)
-k_input = st.text_input("ใส่ค่า k (คั่นด้วยคอมม่า):", value="10, 100, 1000, 10000")
-st.warning("⚠️ คำเตือน: แนะนำอย่าใส่ค่า k เกิน 10 ล้าน เนื่องจากอาจทำให้ระบบโหลดช้าครับ")
-
-def brute_force(a, k):
-    res = 1.0
-    for n in range(a + 1, k + 1):
-        res *= ((n + 1)**3 + a**3) / (n**3 - a**3)
-    return res
-
-def high_speed(a, k):
-    # สมการ: C(k+a+1, 2a+1) * [ Product(i^2+ai+a^2) จาก i=2 ถึง a / Product(j^2+aj+a^2) จาก j=k-a+2 ถึง k ]
-    n = k + a + 1
-    r = 2 * a + 1
-    comb = math.comb(n, r)
-    
-    prod_top = 1
-    for i in range(2, a + 1):
-        prod_top *= (i**2 + a*i + a**2)
-        
-    prod_bottom = 1
-    for j in range(k - a + 2, k + 1):
-        prod_bottom *= (j**2 + a*j + a**2)
-        
-    return comb * (prod_top / prod_bottom)
-
-# --- ปุ่มรันเปรียบเทียบ ---
-if st.button("เปรียบเทียบความเร็ว"):
-    try:
-        k_values = [int(x.strip()) for x in k_input.split(",")]
-        results = []
-        for k in k_values:
-            iterations = max(0, k - a)
-            
-            start = time.time()
-            val_bf = brute_force(a, k)
-            time_bf = time.time() - start
-            
-            start = time.time()
-            val_hs = high_speed(a, k)
-            time_hs = time.time() - start
-            
-            is_correct = "✅ ถูกต้อง" if round(val_bf, 4) == round(val_hs, 4) else "❌ ไม่ถูกต้อง"
-            speed_ratio = time_bf / time_hs if time_hs > 0 else 0
-            
-            results.append({
-                "k": k,
-                "รอบการคำนวณ (BF)": iterations,
-                "BF Time(s)": f"{time_bf:.6f}",
-                "HS Time(s)": f"{time_hs:.6f}",
-                "อัตราส่วนความเร็ว": f"{speed_ratio:.1f} เท่า",
-                "ผลลัพธ์ (BF)": f"{val_bf:.4f}",
-                "ผลลัพธ์ (HS)": f"{val_hs:.4f}",
-                "สถานะ": is_correct
-            })
-        
-        st.table(pd.DataFrame(results))
-    except Exception as e:
-        st.error(f"เกิดข้อผิดพลาด: {e}")
