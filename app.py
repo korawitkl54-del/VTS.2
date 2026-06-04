@@ -9,7 +9,6 @@ st.set_page_config(page_title="เทเลสโคปิกกำลังส�
 
 # --- Sidebar ---
 with st.sidebar:
-    # ตรวจสอบชื่อไฟล์รูปให้ตรงกับที่อัปขึ้น GitHub
     try:
         st.image("image-removebg-preview.png", width=200) 
     except:
@@ -62,17 +61,15 @@ if st.button("เปรียบเทียบความเร็ว"):
         for k in k_values:
             iterations = max(0, k - a)
             
-            # วัดเวลา BF
             start = time.time()
             val_bf = brute_force(a, k)
             time_bf = time.time() - start
             
-            # วัดเวลา HS
             start = time.time()
             val_hs = high_speed(a, k)
             time_hs = time.time() - start
             
-            # เช็คความถูกต้องด้วยทศนิยม 4 ตำแหน่ง
+            # ตรวจสอบความถูกต้อง (ต้องอยู่บรรทัดเดียวห้ามตัด)
             is_correct = "✅ ถูกต้อง" if round(val_bf, 4) == round(val_hs, 4) else "❌ ไม่ถูกต้อง"
             speed_ratio = time_bf / time_hs if time_hs > 0 else 0
             
@@ -83,4 +80,10 @@ if st.button("เปรียบเทียบความเร็ว"):
                 "HS Time(s)": f"{time_hs:.6f}",
                 "อัตราส่วนความเร็ว": f"{speed_ratio:.1f} เท่า",
                 "ผลลัพธ์ (BF)": f"{val_bf:.4f}",
-                "ผลลัพธ์ (HS)": f"{val_hs:.4
+                "ผลลัพธ์ (HS)": f"{val_hs:.4f}",
+                "สถานะ": is_correct
+            })
+        
+        st.table(pd.DataFrame(results))
+    except:
+        st.error("ใส่ค่า k ให้ถูกต้องนะครับ (เช่น 10, 100, 1000)")
