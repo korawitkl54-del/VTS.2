@@ -45,7 +45,7 @@ if 'user_info' not in st.session_state:
     st.stop()
 
 # --- หน้าหลัก ---
-st.title("⚡ เทเลสโคปิกกำลังสาม")
+st.title("⚡ เทเลสโคปิกกำลังสาม Telescoping Cubic จากคณิตศาสตร์บริสุทธิ์สู่อัลกอริทึมการประมวลผลความเร็วสูง")
 
 def brute_force(a, k):
     res = Decimal(1.0)
