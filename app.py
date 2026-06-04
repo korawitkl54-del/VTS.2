@@ -9,16 +9,15 @@ st.set_page_config(page_title="เทเลสโคปิกกำลังส�
 
 # --- ใส่ตราโรงเรียนที่ Sidebar ---
 with st.sidebar:
-    st.image("image-removebg-preview.png", width=200) # ใส่ชื่อไฟล์รูปให้ตรง
+    # ตรวจสอบชื่อไฟล์รูปให้ตรงกับที่อัปโหลดใน GitHub นะครับ
+    st.image("image-removebg-preview.png", width=200) 
     st.markdown("---")
     st.write("ระบบคำนวณเชิงประสิทธิภาพสูง")
 
-st.title("⚡  Telescoping Cubic จากคณิตศาสตร์บริสุทธิ์สู่อัลกอริทึมการประมวลผลความเร็วสูง")
+st.title("⚡ Telescoping Cubic จากคณิตศาสตร์บริสุทธิ์สู่อัลกอริทึมการประมวลผลความเร็วสูง")
 
-# ลิงก์ Web App ของอ้าย
 WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyC87oA6lqQaxWUfo8y5OtImplEP2552O1C-Tj2zTctw1cyeMC1Tm7F7M2Ag9FkN3lR/exec"
 
-# --- ฟังก์ชันบันทึก Log ---
 def save_to_sheets(source, entry_time):
     params = {'source': source, 'time': entry_time}
     try:
@@ -26,7 +25,6 @@ def save_to_sheets(source, entry_time):
     except:
         pass
 
-# --- ระบบล็อกอิน ---
 if 'user_info' not in st.session_state:
     with st.form("user_form"):
         source = st.text_input("ระบุโรงเรียน/หน่วยงาน")
@@ -58,21 +56,32 @@ if st.button("เปรียบเทียบความเร็ว"):
         k_values = [int(x.strip()) for x in k_input.split(",")]
         results = []
         for k in k_values:
+            iterations = max(0, k - a)
+            
+            # วัดเวลา BF
             start = time.time()
             val_bf = brute_force(a, k)
             time_bf = time.time() - start
             
+            # วัดเวลา HS
             start = time.time()
             val_hs = high_speed(a, k)
             time_hs = time.time() - start
             
+            # ตรวจสอบความถูกต้องและคำนวณอัตราส่วน
+            is_correct = "✅ ถูกต้อง" if round(val_bf, 4) == round(val_hs, 4) else "❌ ไม่ถูกต้อง"
+            speed_ratio = time_bf / time_hs if time_hs > 0 else 0
+            
             results.append({
-                "k": k, 
-                "BF Time(s)": f"{time_bf:.6f}", 
-                "HS Time(s)": f"{time_hs:.6f}", 
-                "Result": f"{val_hs:.4f}"
+                "k": k,
+                "รอบการคำนวณ (BF)": iterations,
+                "BF Time(s)": f"{time_bf:.6f}",
+                "HS Time(s)": f"{time_hs:.6f}",
+                "อัตราส่วนความเร็ว": f"{speed_ratio:.1f} เท่า",
+                "ความถูกต้อง": is_correct,
+                "ผลลัพธ์ (HS)": f"{val_hs:.4f}"
             })
         
         st.table(pd.DataFrame(results))
     except:
-        st.error("ใส่ค่า k ให้ถูกต้องนะครับ")
+        st.error("ใส่ค่า k ให้ถูกต้องนะครับ (เช่น 10, 100, 1000)")
