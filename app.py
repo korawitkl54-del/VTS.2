@@ -17,7 +17,7 @@ with st.sidebar:
     st.markdown("---")
     st.write("ระบบคำนวณเชิงประสิทธิภาพสูง")
 
-st.title("⚡ Telescoping Cubic จากคณิตศาสตร์บริสุทธิ์สู่อัลกอริทึมการประมวลผลความเร็วสูง")
+st.title("⚡ เทเลสโคปิกกำลังสาม")
 
 WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyC87oA6lqQaxWUfo8y5OtImplEP2552O1C-Tj2zTctw1cyeMC1Tm7F7M2Ag9FkN3lR/exec"
 
@@ -43,6 +43,7 @@ if 'user_info' not in st.session_state:
 # --- ส่วนคำนวณ ---
 a = st.number_input("ใส่ค่า a:", value=1)
 k_input = st.text_input("ใส่ค่า k (คั่นด้วยคอมม่า):", value="10, 100, 1000, 10000")
+st.warning("⚠️ คำเตือน: แนะนำอย่าใส่ค่า k เกิน 10 ล้าน เนื่องจากอาจทำให้ระบบโหลดช้าครับ")
 
 def brute_force(a, k):
     res = 1.0
@@ -98,4 +99,4 @@ if st.button("เปรียบเทียบความเร็ว"):
         
         st.table(pd.DataFrame(results))
     except Exception as e:
-        st.error(f"เกิดข้อผิดพลาด: {e
+        st.error(f"เกิดข้อผิดพลาด: {e}")
