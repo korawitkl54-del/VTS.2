@@ -6,11 +6,22 @@ import math
 from datetime import datetime
 from decimal import Decimal, getcontext
 
+# ตั้งค่าความละเอียดทศนิยม
 getcontext().prec = 50
 
+# --- ตั้งค่าหน้าเว็บ ---
 st.set_page_config(page_title="เทเลสโคปิกกำลังสาม", layout="wide")
 
-# --- ล็อกอิน ---
+# --- Sidebar: ตราโรงเรียน ---
+with st.sidebar:
+    try:
+        st.image("image-removebg-preview.png", width=200)
+    except:
+        st.write("โรงเรียนบัวใหญ่")
+    st.markdown("---")
+    st.write("ระบบคำนวณเชิงประสิทธิภาพสูง")
+
+# --- ระบบล็อกอิน ---
 if 'user_info' not in st.session_state:
     st.title("เข้าสู่ระบบ")
     with st.form("user_form"):
@@ -19,11 +30,12 @@ if 'user_info' not in st.session_state:
         if submit and source:
             st.session_state.user_info = {"source": source}
             st.rerun()
-    st.stop() # ถ้ายังไม่ล็อกอิน ให้หยุดทำงานที่นี่
+    st.stop()
 
-# --- ส่วนนี้จะรันก็ต่อเมื่อ Login ผ่านแล้วเท่านั้น ---
-st.title("⚡ Telescoping Cubic: ระบบคำนวณประสิทธิภาพสูง")
+# --- หน้าหลัก (หลังล็อกอิน) ---
+st.title("⚡ Telescoping Cubic จากคณิตศาสตร์บริสุทธิ์สู่อัลกอริทึม")
 
+# ฟังก์ชันคำนวณ
 def brute_force(a, k):
     res = Decimal(1.0)
     a_dec = Decimal(a)
@@ -46,26 +58,43 @@ def high_speed(a, k):
         prod_bottom *= (Decimal(j)**2 + a_dec*Decimal(j) + a_dec**2)
     return comb * (prod_top / prod_bottom)
 
-# --- ช่องใส่ค่า ---
+# --- ส่วนรับค่า ---
 a = st.number_input("ใส่ค่า a:", value=1)
 k_input = st.text_input("ใส่ค่า k (คั่นด้วยคอมม่า):", value="10, 100, 1000, 10000")
 
-# --- ปุ่มคำนวณ ---
+# --- ปุ่มรัน ---
 if st.button("เปรียบเทียบความเร็ว"):
     try:
         k_values = [int(x.strip()) for x in k_input.split(",")]
         results = []
         for k in k_values:
+            iterations = max(0, k - a)
+            
+            # วัดเวลา BF
+            start = time.time()
             val_bf = brute_force(a, k)
+            time_bf = time.time() - start
+            
+            # วัดเวลา HS
+            start = time.time()
             val_hs = high_speed(a, k)
+            time_hs = time.time() - start
+            
+            # เช็คความถูกต้อง
             is_correct = "✅ ถูกต้อง" if abs(val_bf - val_hs) < Decimal('1e-6') else "❌ ไม่ถูกต้อง"
+            speed_ratio = time_bf / time_hs if time_hs > 0 else 0
             
             results.append({
                 "k": k,
-                "ผลลัพธ์ (BF)": f"{val_bf:.2f}",
-                "ผลลัพธ์ (HS)": f"{val_hs:.2f}",
+                "รอบการทำงาน (BF)": iterations,
+                "BF Time(s)": f"{time_bf:.6f}",
+                "HS Time(s)": f"{time_hs:.6f}",
+                "อัตราส่วนความเร็ว": f"{speed_ratio:.1f} เท่า",
+                "ผลลัพธ์ (BF)": f"{val_bf:.4f}",
+                "ผลลัพธ์ (HS)": f"{val_hs:.4f}",
                 "สถานะ": is_correct
             })
+        
         st.table(pd.DataFrame(results))
     except Exception as e:
         st.error(f"เกิดข้อผิดพลาด: {e}")
