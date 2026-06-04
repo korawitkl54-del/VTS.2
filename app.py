@@ -7,10 +7,13 @@ from datetime import datetime
 # --- ตั้งค่าหน้าเว็บ ---
 st.set_page_config(page_title="เทเลสโคปิกกำลังสาม", layout="wide")
 
-# --- ใส่ตราโรงเรียนที่ Sidebar ---
+# --- Sidebar: ใส่ตราโรงเรียน ---
 with st.sidebar:
-    # ตรวจสอบชื่อไฟล์รูปให้ตรงกับที่อัปโหลดใน GitHub นะครับ
-    st.image("image-removebg-preview.png", width=200) 
+    # ตรวจสอบชื่อไฟล์รูปให้ตรงกับที่อัปขึ้น GitHub
+    try:
+        st.image("image-removebg-preview.png", width=200) 
+    except:
+        st.write("โรงเรียนบัวใหญ่")
     st.markdown("---")
     st.write("ระบบคำนวณเชิงประสิทธิภาพสูง")
 
@@ -25,6 +28,7 @@ def save_to_sheets(source, entry_time):
     except:
         pass
 
+# --- ระบบล็อกอิน ---
 if 'user_info' not in st.session_state:
     with st.form("user_form"):
         source = st.text_input("ระบุโรงเรียน/หน่วยงาน")
@@ -39,7 +43,7 @@ if 'user_info' not in st.session_state:
 # --- ส่วนคำนวณ ---
 a = st.number_input("ใส่ค่า a:", value=1)
 k_input = st.text_input("ใส่ค่า k (คั่นด้วยคอมม่า):", value="10, 100, 1000, 10000")
-st.warning("⚠️ คำเตือน: แนะนำอย่าใส่ค่า k เกิน 10 ล้าน เนื่องจากอาจทำให้ระบบโหลดช้าและอาจเกินขีดจำกัดการคำนวณของเซิร์ฟเวอร์ครับ")
+st.warning("⚠️ คำเตือน: แนะนำอย่าใส่ค่า k เกิน 10 ล้าน เนื่องจากอาจทำให้ระบบโหลดช้าครับ")
 
 def brute_force(a, k):
     res = 1.0
@@ -68,7 +72,7 @@ if st.button("เปรียบเทียบความเร็ว"):
             val_hs = high_speed(a, k)
             time_hs = time.time() - start
             
-            # ตรวจสอบความถูกต้องและคำนวณอัตราส่วน
+            # วิเคราะห์ข้อมูล
             is_correct = "✅ ถูกต้อง" if round(val_bf, 4) == round(val_hs, 4) else "❌ ไม่ถูกต้อง"
             speed_ratio = time_bf / time_hs if time_hs > 0 else 0
             
@@ -78,8 +82,9 @@ if st.button("เปรียบเทียบความเร็ว"):
                 "BF Time(s)": f"{time_bf:.6f}",
                 "HS Time(s)": f"{time_hs:.6f}",
                 "อัตราส่วนความเร็ว": f"{speed_ratio:.1f} เท่า",
-                "ความถูกต้อง": is_correct,
-                "ผลลัพธ์ (HS)": f"{val_hs:.4f}"
+                "ผลลัพธ์ (BF)": f"{val_bf:.4f}",
+                "ผลลัพธ์ (HS)": f"{val_hs:.4f}",
+                "สถานะ": is_correct
             })
         
         st.table(pd.DataFrame(results))
