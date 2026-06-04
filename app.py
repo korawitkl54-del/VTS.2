@@ -102,5 +102,5 @@ if st.button("เปรียบเทียบความเร็ว"):
                 "สถานะ": is_correct
             })
         st.table(pd.DataFrame(results))
-    except Exception as e:
-        st.error(f"เกิดข้อผิดพลาด
+    except Exception as err:
+        st.error("เกิดข้อผิดพลาด: " + str(err))
