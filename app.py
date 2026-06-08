@@ -24,6 +24,7 @@ def save_to_sheets(source):
 
 # --- Sidebar & Login ---
 with st.sidebar:
+    st.image("image-removebg-preview.png", width=200)
     st.write("โรงเรียนบัวใหญ่")
     st.markdown("---")
     st.write("ระบบคำนวณเชิงประสิทธิภาพสูง")
