@@ -27,7 +27,10 @@ with st.sidebar:
     st.image("image-removebg-preview.png", width=200)
     st.write("โรงเรียนบัวใหญ่")
     st.markdown("---")
-    st.write("ระบบคำนวณเชิงประสิทธิภาพสูง")
+    st.write("ระบบคำนวณเชิงประสิทธิภาพสูง
+    
+             ------จัดทำโดย------
+             ด.ช.กรวิชญ์ เลขนอก ม.3/1")
 
 if 'user_info' not in st.session_state:
     with st.form("user_form"):
