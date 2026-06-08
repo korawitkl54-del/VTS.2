@@ -38,7 +38,7 @@ if 'user_info' not in st.session_state:
             st.rerun()
     st.stop()
 
-st.title("⚡🍗🍗🍗 เทเลสโคปิก Telescoping cubic จากคณิตศาสตร์บริสุทธิ์สูอัลกอริทึมการประมวลผลความเร็วสูง")
+st.title("⚡ เทเลสโคปิก Telescoping cubic จากคณิตศาสตร์บริสุทธิ์สูอัลกอริทึมการประมวลผลความเร็วสูง")
 
 # --- ฟังก์ชันคำนวณ (ใช้ Decimal เพื่อความแม่นยำ) ---
 def brute_force(a, k):
